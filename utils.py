@@ -14,6 +14,10 @@ import config as C
 from dataset import ImageDataset
 from modules.vae import VAE
 
+
+def init_weights(m):
+    for p in m.parameters():
+        nn.init.normal_(p, std=0.04)
         
         
 def count_params(model):
