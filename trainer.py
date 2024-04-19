@@ -82,12 +82,11 @@ class Trainer:
         self.global_step += 1
         
         self.info.update(
-            dict(
-                step=self.global_step,
-                loss=self.global_batch_loss(),
-                rec_loss=self.rec_loss,
-                kl_loss=self.kl_loss
-            )
+            step=self.global_step,
+            loss=self.global_batch_loss(),
+            rec_loss=self.rec_loss,
+            kl_loss=self.kl_loss,
+            lr=self.lr_scheduler.get_last_lr()[0]
         )
     
     def global_batch_loss(self):
@@ -120,6 +119,7 @@ class Trainer:
                 self.accumulate_gradients()
                 
                 if self.global_step % self.checkpoint_interval == 0:
+                    bar.set_description('Validating...')
                     # Validate and save model here
                     imgs = sampler.sample(nsamples=36)
                     imgs = unflatten_imgs(imgs, C.img_size)
