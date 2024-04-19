@@ -144,7 +144,7 @@ def create_data_loader(*, batch_size, path=None, download_data=None, train=True)
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize([32, 32]),
-        transforms.Lambda(lambda x: (x * 255).to(torch.int32)),
+        transforms.Lambda(lambda x: (x * 255).to(torch.long)),
         transforms.Lambda(lambda x: flatten_imgs(x))
     ])
     
