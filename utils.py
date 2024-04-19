@@ -18,6 +18,22 @@ from modules.vae import VAE
 def init_weights(m):
     for p in m.parameters():
         nn.init.normal_(p, std=0.04)
+        
+        
+def count_params(model):
+    if isinstance(model, nn.DataParallel):
+        n_params = sum(p.numel() for p in model.module.parameters())
+    elif isinstance(model, nn.Module):
+        n_params = sum(p.numel() for p in model.parameters())
+    return n_params
+
+
+def vae_summary(vae: VAE):
+    decoder_nparams = count_params(vae.decoder)
+    encoder_nparams = count_params(vae.encoder)
+    print(f'Decoder parameters: {decoder_nparams:,}')
+    print(f'Encoder parameters: {encoder_nparams:,}')
+    print(f'Total parameters: {decoder_nparams + encoder_nparams}')
 
 
 def flatten_imgs(imgs):

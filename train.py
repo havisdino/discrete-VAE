@@ -3,7 +3,7 @@ import torch
 
 from trainer import Trainer
 from utils import (create_data_loader, create_modules_from_checkpoint,
-                   create_modules_from_default_config)
+                   create_modules_from_default_config, vae_summary)
 
 
 if __name__ == '__main__':
@@ -31,6 +31,8 @@ if __name__ == '__main__':
 
     else:
         model, optimizer, lr_scheduler, grad_scaler = create_modules_from_default_config()
+    
+    vae_summary(model)
 
     available_data = ['cifar10']
     if args.traindata in available_data and args.valdata in available_data:
