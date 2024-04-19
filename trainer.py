@@ -114,6 +114,8 @@ class Trainer:
             x = x.to(self.device)
             self.train_step(x)
             
+            bar.update()
+            
             if self.substep % self.grad_accum_interval == 0:
                 self.accumulate_gradients()
                 
