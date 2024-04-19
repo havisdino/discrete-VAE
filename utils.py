@@ -14,10 +14,6 @@ import config as C
 from dataset import ImageDataset
 from modules.vae import VAE
 
-
-def init_weights(m):
-    for p in m.parameters():
-        nn.init.normal_(p, std=0.04)
         
         
 def count_params(model):
@@ -67,8 +63,8 @@ def save_images(imgs, dir, make_grid=True):
             torchvision.utils.save_image(img / 255., fp)
 
 
-def get_model_config():
-    return dict(
+def get_model_config(include_imgsize=True):
+    config = dict(
         chw=C.chw,
         d_model=C.d_model,
         dff=C.dff,
@@ -77,10 +73,12 @@ def get_model_config():
         nheads_encoder=C.nheads_encoder,
         nblocks_encoder=C.nblocks_encoder,
         dropout=C.dropout,
-        nbits=C.nbits,
-        img_size=C.img_size
+        nbits=C.nbits
     )
-
+    if include_imgsize:
+        config.update(img_size=C.img_size)
+    return config
+        
 
 def modify_config(config, **kwargs):
     for key, item in kwargs.items():
@@ -95,7 +93,7 @@ def create_model_from_checkpoint(checkpoint):
 
 
 def create_model_from_default_config():
-    config = get_model_config()
+    config = get_model_config(include_imgsize=False)
     return VAE(**config)
 
 

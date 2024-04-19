@@ -3,8 +3,6 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-from utils import init_weights
-
 
 class SelfAttention(nn.Module):
     def __init__(self, d_model, n_heads, dropout=0.1):
@@ -77,8 +75,6 @@ class Transformer(nn.Module, ABC):
         
         self.blocks = nn.ModuleList()
         self._build_transformer_blocks(nblocks, d_model, nheads, dff, dropout)
-            
-        self.apply(init_weights)
     
     @abstractmethod
     def _build_transformer_blocks(self, n_blocks, d_model, n_heads, dff, dropout):

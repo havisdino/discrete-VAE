@@ -2,9 +2,12 @@ from dataclasses import dataclass
 import torch
 from torch import nn
 
-from decoder import Decoder
-from encoder import Encoder
-from utils import init_weights
+from modules.decoder import Decoder
+from modules.encoder import Encoder
+
+def _init_weights(m):
+    for p in m.parameters():
+        nn.init.normal_(p, std=0.04)
 
 
 @dataclass
@@ -25,6 +28,8 @@ class VAE(nn.Module):
     nbits: int = 8
     
     def __post_init__(self):
+        super().__init__()
+        
         self.pe = nn.Parameter(torch.randn(1, self.chw, self.d_model))
         
         self.encoder = Encoder(
@@ -35,7 +40,7 @@ class VAE(nn.Module):
             self.d_model, self.dff, self.nlayers_decoder, self.d_latent,
             self.dropout, self.nbits
         )
-        self.apply(init_weights)
+        self.apply(_init_weights)
     
     def forward(self, x):
         mean, logstd = self.forward_encoder(x)

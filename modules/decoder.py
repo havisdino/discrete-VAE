@@ -1,7 +1,5 @@
 import torch
-from torch import dropout, nn
-
-from utils import init_weights
+from torch import nn
 
 
 class ReZeroFFNBlock(nn.Module):
@@ -39,8 +37,7 @@ class Decoder(nn.Module):
         self.zproj = nn.Linear(d_latent, d_model)
         self.ffn = DecoderFFN(d_model, dff, nlayers, dropout)
         self.outporj = nn.Linear(dff, self.nclasses)
-        
-        self.apply(init_weights)
+
     
     def forward(self, z, pe):
         assert z.ndim == 2 and z.size(-1) == self.latent_dim
