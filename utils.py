@@ -58,6 +58,9 @@ def generate_file_name():
 
 
 def save_images(imgs, dir, make_grid=True):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+        
     if make_grid:
         fp = os.path.join(dir, generate_file_name())
         torchvision.utils.save_image(imgs / 255., fp)
