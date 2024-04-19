@@ -38,9 +38,9 @@ class Trainer:
     
     @staticmethod
     def get_reconstruction_loss(logits, x):
-        B = x.size(0)
-        x = x.view(B, -1)
-        logits = logits.view(B, -1)
+        D = logits.size(-1)
+        x = x.view(-1)
+        logits = logits.view(-1, D)
         return F.cross_entropy(logits, x)
     
     @staticmethod
