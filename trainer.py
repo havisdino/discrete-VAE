@@ -33,6 +33,7 @@ class Trainer:
     def __post_init__(self):
         self.substep = 0
         self.info = dict()
+        self.model.to(self.device)
         self.saver = Saver(self.save_last_k_checkpoints, self.checkpoint_interval)
     
     @staticmethod
@@ -111,6 +112,7 @@ class Trainer:
                 x = iter(trainloader)
                 continue
             x.to(self.device)
+            print(x.device)
             self.train_step(x)
             
             if self.substep % self.grad_accum_interval == 0:

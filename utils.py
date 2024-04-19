@@ -125,14 +125,14 @@ def create_modules_from_default_config():
     return model, optimizer, lr_scheduler, grad_scaler
 
 
-@overload
-def create_data_loader(*, batch_size: int, path: str) -> DataLoader:
-    ...
+# @overload
+# def create_data_loader(*, batch_size: int, path: str) -> DataLoader:
+#     ...
 
 
-@overload
-def create_data_loader(*, batch_size: int, download_data: Literal['cifar10'] | None, train: bool) -> DataLoader:
-    ...
+# @overload
+# def create_data_loader(*, batch_size: int, download_data: Literal['cifar10'] | None, train: bool) -> DataLoader:
+#     ...
 
 
 def create_data_loader(*, batch_size, path=None, download_data=None, train=True) -> DataLoader:
