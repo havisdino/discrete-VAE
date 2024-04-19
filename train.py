@@ -32,6 +32,7 @@ if __name__ == '__main__':
     else:
         model, optimizer, lr_scheduler, grad_scaler = create_modules_from_default_config()
         model.apply(init_weights)
+        init_step = 0
     
     vae_summary(model)
 
