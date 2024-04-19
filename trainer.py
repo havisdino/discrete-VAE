@@ -98,6 +98,8 @@ class Trainer:
         
         print(f'Accumulating gradients after {self.grad_accum_interval} substeps')
         
+        sampler = Sampler(self.model, self.device, self.use_amp)
+        
         data_iter = iter(trainloader)
         self.optimizer.zero_grad()
         
@@ -107,9 +109,9 @@ class Trainer:
             try:
                 x = next(data_iter)
             except StopIteration:
-                x = iter(trainloader)
+                data_iter = iter(trainloader)
                 continue
-            x.to(self.device)
+            x = x.to(self.device)
             self.train_step(x)
             
             if self.substep % self.grad_accum_interval == 0:
@@ -117,6 +119,9 @@ class Trainer:
                 
                 if self.global_step % self.checkpoint_interval == 0:
                     # Validate and save model here
+                    imgs = sampler.sample(nsamples=36)
+                    imgs = unflatten_imgs(imgs, C.img_size)
+                    save_images(imgs, './results')
                     
                     self.saver.save(
                         self.model, self.optimizer, self.grad_scaler,
